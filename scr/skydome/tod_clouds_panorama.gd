@@ -130,8 +130,6 @@ func _process(delta: float) -> void:
 func _physics_process(delta: float) -> void:
 	if rotation_process == RotationProcess.PhysicsProcess:
 		_on_process(delta)
-	
-	print("PHYPROCESS")
 
 func _on_process(delta: float) -> void:
 	_instance.set_rotated(Vector3.UP, delta * rotation_speed)
