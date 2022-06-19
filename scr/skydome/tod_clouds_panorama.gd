@@ -48,7 +48,6 @@ func _set_alpha_channel(value: int) -> void:
 	alpha_channel = value
 	_material.set_shader_param("_AlphaChannel", TOD_Util.get_color_channel(value))
 
-
 var day_color:= Color(0.807843, 0.909804, 1.0, 1.0) setget _set_day_color
 func _set_day_color(value: Color) -> void:
 	day_color = value
@@ -96,6 +95,9 @@ func _set_render_priority(value: int) -> void:
 
 var rotation_speed: float = 0.002
 
+enum RotationProcess{ Process = 0, PhysicsProcess}
+var rotation_process: int = RotationProcess.Process
+
 func _init() -> void:
 	_mesh.radial_segments = 16
 	_mesh.rings = 8
@@ -107,12 +109,31 @@ func _notification(what: int) -> void:
 			_instance.draw(get_world(), _mesh, _material)
 			_instance.set_visible(visible)
 			_init_props()
+			
+			if !Engine.editor_hint:
+				if rotation_process == RotationProcess.Process:
+					set_process(true)
+					set_physics_process(false)
+				else:
+					set_process(false)
+					set_physics_process(true)
+
 		NOTIFICATION_EXIT_TREE:
 			_instance.clear()
 		NOTIFICATION_VISIBILITY_CHANGED:
 			_instance.set_visible(visible)
 
 func _process(delta: float) -> void:
+	if rotation_process == RotationProcess.Process:
+		_on_process(delta)
+
+func _physics_process(delta: float) -> void:
+	if rotation_process == RotationProcess.PhysicsProcess:
+		_on_process(delta)
+	
+	print("PHYPROCESS")
+
+func _on_process(delta: float) -> void:
 	_instance.set_rotated(Vector3.UP, delta * rotation_speed)
 
 func _init_props() -> void:
@@ -162,6 +183,7 @@ func _get_property_list() -> Array:
 	ret.push_back({name = "layers", type=TYPE_INT, hint=PROPERTY_HINT_LAYERS_3D_RENDER})
 	ret.push_back({name = "render_priority", type=TYPE_INT})
 	ret.push_back({name = "rotation_speed", type=TYPE_REAL})
+	ret.push_back({name = "rotation_process", type=TYPE_INT, hint=PROPERTY_HINT_ENUM, hint_string="Process, PhysicProcess"})
 	
 	ret.push_back({name = "Target", type=TYPE_NIL, usage=PROPERTY_USAGE_GROUP})
 	ret.push_back({name = "sky_path", type=TYPE_NODE_PATH})
