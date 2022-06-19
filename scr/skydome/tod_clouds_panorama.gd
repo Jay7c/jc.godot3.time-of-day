@@ -1,5 +1,5 @@
 tool
-class_name TOD_Panorama extends Spatial
+class_name TOD_Panorama extends TOD_CloudsBase
 # Description:
 # - Panoramic clouds.
 # License:
@@ -7,31 +7,9 @@ class_name TOD_Panorama extends Spatial
 # - See: LICENSE File.
 
 # **** Resources ****
-
-var _material:= ShaderMaterial.new()
-var _mesh:= SphereMesh.new()
 const _shader: Shader = preload(
 	"res://addons/jc.godot3.time-of-day/scr/shaders/clouds_panorama.shader"
 )
-
-# **** Instances ****
-var _instance:= TOD_SkyDrawer.new()
-
-# **** References ****
-var _skydome: TOD_Skydome = null
-
-# **** Params ****
-var _signals_connected: bool = false
-
-var sky_path: NodePath setget _set_sky_path
-func _set_sky_path(value: NodePath) -> void:
-	sky_path = value
-	if value != null:
-		_skydome = get_node_or_null(value) as TOD_Skydome
-		
-		if _signals_connected:
-			_disconnect_signals()
-		_connect_signals()
 
 var panorama: Texture = null setget _set_panorama
 func _set_panorama(value: Texture) -> void:
@@ -83,33 +61,20 @@ func _set_horizon_level(value: float) -> void:
 	horizon_level = value
 	_material.set_shader_param("_HorizonLevel", value)
 
-var layers: int = 4 setget _set_layers
-func _set_layers(value: int) -> void:
-	layers = value
-	_instance.set_layers(value)
 
-var render_priority: int = -125 setget _set_render_priority
-func _set_render_priority(value: int) -> void:
-	render_priority = value
-	_material.render_priority = value
-
+enum RotationProcess{ Process = 0, PhysicsProcess }
+var rotation_process: int = RotationProcess.Process
 var rotation_speed: float = 0.002
 
-enum RotationProcess{ Process = 0, PhysicsProcess}
-var rotation_process: int = RotationProcess.Process
 
-func _init() -> void:
-	_mesh.radial_segments = 16
-	_mesh.rings = 8
+func _on_init() -> void:
+	._on_init()
 	_material.shader = _shader
 
-func _notification(what: int) -> void:
+func _on_notification(what: int) -> void:
+	._on_notification(what)
 	match(what):
 		NOTIFICATION_ENTER_TREE:
-			_instance.draw(get_world(), _mesh, _material)
-			_instance.set_visible(visible)
-			_init_props()
-			
 			if !Engine.editor_hint:
 				if rotation_process == RotationProcess.Process:
 					set_process(true)
@@ -117,11 +82,6 @@ func _notification(what: int) -> void:
 				else:
 					set_process(false)
 					set_physics_process(true)
-
-		NOTIFICATION_EXIT_TREE:
-			_instance.clear()
-		NOTIFICATION_VISIBILITY_CHANGED:
-			_instance.set_visible(visible)
 
 func _process(delta: float) -> void:
 	if rotation_process == RotationProcess.Process:
@@ -135,7 +95,8 @@ func _on_process(delta: float) -> void:
 	_instance.set_rotated(Vector3.UP, delta * rotation_speed)
 
 func _init_props() -> void:
-	_set_sky_path(sky_path)
+	._init_props()
+	
 	_set_panorama(panorama)
 	_set_density_channel(density_channel)
 	_set_alpha_channel(alpha_channel)
@@ -145,20 +106,7 @@ func _init_props() -> void:
 	_set_horizon_fade_offset(horizon_fade_offset)
 	_set_horizon_fade(horizon_fade)
 	_set_horizon_level(horizon_level)
-	_set_layers(layers)
 	_set_intensity(intensity)
-
-func _connect_signals() -> void:
-	if _skydome == null: return
-	_skydome.connect("sun_direction_changed", self, "_on_sun_direction_changed")
-	_skydome.connect("moon_direction_changed", self, "_on_moon_direction_changed")
-	_signals_connected = true
-
-func _disconnect_signals() -> void:
-	if _skydome == null: return
-	_skydome.disconnect("sun_direction_changed", self, "_on_sun_direction_changed")
-	_skydome.disconnect("moon_direction_changed", self, "_on_moon_direction_changed")
-	_signals_connected = false
 
 func _update_color() -> void:
 	_material.set_shader_param("_DayColor", day_color)
@@ -175,16 +123,12 @@ func _on_moon_direction_changed(direction: Vector3) -> void:
 	_material.set_shader_param("_MoonDirection", direction)
 	_update_color()
 
-func _get_property_list() -> Array:
+func _property_list() -> Array:
 	var ret: Array
-	ret.push_back({name = "CloudsPanorama", type=TYPE_NIL, usage=PROPERTY_USAGE_CATEGORY})
-	ret.push_back({name = "layers", type=TYPE_INT, hint=PROPERTY_HINT_LAYERS_3D_RENDER})
-	ret.push_back({name = "render_priority", type=TYPE_INT})
+	ret.append_array(._property_list())
+	ret.push_back({name = "Panorama", type=TYPE_NIL, usage=PROPERTY_USAGE_CATEGORY})
 	ret.push_back({name = "rotation_speed", type=TYPE_REAL})
 	ret.push_back({name = "rotation_process", type=TYPE_INT, hint=PROPERTY_HINT_ENUM, hint_string="Process, PhysicProcess"})
-	
-	ret.push_back({name = "Target", type=TYPE_NIL, usage=PROPERTY_USAGE_GROUP})
-	ret.push_back({name = "sky_path", type=TYPE_NODE_PATH})
 	
 	ret.push_back({name = "Texture", type=TYPE_NIL, usage=PROPERTY_USAGE_GROUP})
 	ret.push_back({name = "density_channel", type=TYPE_INT, hint=PROPERTY_HINT_ENUM, hint_string="Red, Green, Blue, Alpha"})
