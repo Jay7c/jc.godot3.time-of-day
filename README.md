@@ -14,17 +14,17 @@ Dynamic skydome and ToD plugin for godot engine.
 ------------------------------------
 
 ## Mono version?
-> The C# version will come back later.
+> The C# version will come in godot 4.
 
 ## Reflections:
 > Optimal reflections are possible with a well-configured reflection probe. 
 ------------------------------------
 
 ## Limitations: 
-- You can only get sky reflections with a reflection probe. 
+- You can only get sky reflections with a reflection probe(realtime with always update mode and low quality resolution). 
 
 ## Future:
-- Currently it is experimental, for godot 4 I will improve the plugin(I will use this plugin in my game)
+- For godot 4 I will improve the plugin(I will use this plugin in my game)
 
 ## Feedback and comments is welcome.
 ------------------------------------
