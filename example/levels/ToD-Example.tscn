@@ -211,12 +211,16 @@ light_color = Color( 0.788235, 0.870588, 0.984314, 1 )
 light_energy = 0.0
 
 [node name="SkyProbeStatic" type="ReflectionProbe" parent="."]
-visible = false
+layers = 4
 extents = Vector3( 1000, 1000, 1000 )
 cull_mask = 4
+__meta__ = {
+"_editor_description_": ""
+}
 
 [node name="SkyProbeDynamic" type="ReflectionProbe" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.966006, 0 )
+visible = false
 update_mode = 1
 extents = Vector3( 1000, 1000, 1000 )
 cull_mask = 4
