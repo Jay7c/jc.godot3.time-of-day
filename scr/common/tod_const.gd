@@ -60,10 +60,12 @@ const P_FOG_RAYLEIGH_DEPTH:= "_FogRayleighDepth"
 const P_FOG_MIE_DEPTH:= "_FogMieDepth"
 const P_FOG_FALLOFF:= "_FogFalloff"
 
-# DeepSpace.
+# Deep Space.
 const P_DEEP_SPACE_MATRIX:= "_DeepSpaceMatrix"
 const P_BACKGROUND_COLOR:= "_BackgroundColor"
 const P_BACKGROUND_TEXTURE:= "_BackgroundTexture"
+
+# Near Space.
 const P_STARS_FIELD_COLOR:= "_StarsFieldTexture"
 const P_STARS_FIELD_SCINTILLATION:= "_StarsScintillation"
 const P_STARS_FIELD_SCONTILLATION_SPEED:= "_StarsScintillationSpeed"

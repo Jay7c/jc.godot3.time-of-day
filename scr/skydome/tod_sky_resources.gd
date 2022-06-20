@@ -23,7 +23,6 @@ const near_space_shader: Shader = preload("res://addons/jc.godot3.time-of-day/sc
 const moon_shader: Shader = preload("res://addons/jc.godot3.time-of-day/scr/shaders/moon.shader")
 const fog_shader: Shader = preload("res://addons/jc.godot3.time-of-day/scr/shaders/atmospheric_fog.shader")
 
-
 # Scenes.
 const moon_render: PackedScene = preload("res://addons/jc.godot3.time-of-day/content/resources/moon/MoonRender.tscn")
 

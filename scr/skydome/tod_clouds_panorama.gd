@@ -26,8 +26,6 @@ func _set_alpha_channel(value: int) -> void:
 	alpha_channel = value
 	_material.set_shader_param("_AlphaChannel", TOD_Util.get_color_channel(value))
 
-
-
 var horizon_fade_offset: float = 0.2 setget _set_horizon_fade_offset
 func _set_horizon_fade_offset(value: float) -> void:
 	horizon_fade_offset = value
@@ -37,8 +35,6 @@ var horizon_fade: float = 5.0 setget _set_horizon_fade
 func _set_horizon_fade(value: float) -> void:
 	horizon_fade = value
 	_material.set_shader_param("_HorizonFade", value)
-
-
 
 enum RotationProcess{ Process = 0, PhysicsProcess }
 var rotation_process: int = RotationProcess.Process
@@ -81,8 +77,6 @@ func _init_props() -> void:
 	_set_horizon_fade_offset(horizon_fade_offset)
 	_set_horizon_fade(horizon_fade)
 
-
-
 func _property_list() -> Array:
 	var ret: Array
 	ret.append_array(._property_list())
@@ -100,6 +94,5 @@ func _property_list() -> Array:
 	ret.push_back({name = "Horizon", type=TYPE_NIL, usage=PROPERTY_USAGE_GROUP})
 	ret.push_back({name = "horizon_fade_offset", type=TYPE_REAL})
 	ret.push_back({name = "horizon_fade", type=TYPE_REAL})
-	
 	
 	return ret

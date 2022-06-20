@@ -110,4 +110,5 @@ func _property_list() -> Array:
 	ret.push_back({name = "Mie", type=TYPE_NIL, usage=PROPERTY_USAGE_GROUP})
 	ret.push_back({name = "mie_intensity", type=TYPE_REAL})
 	ret.push_back({name = "mie_anisotropy", type=TYPE_REAL})
+	
 	return ret

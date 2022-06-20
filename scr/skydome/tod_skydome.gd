@@ -74,7 +74,6 @@ func _set_sky_render_priority(value: int) -> void:
 	sky_render_priority = value
 	_resources.setup_render_priority(value)
 
-
 # **** Near Space ****
 var sun_altitude: float = 68.8916 setget _set_sun_altitude
 func _set_sun_altitude(value: float) -> void:
@@ -409,7 +408,6 @@ func get_fog_atm_night_intensity() -> float:
 		return TOD_Math.saturate(-get_sun_direction().y + 0.70)
 	return TOD_Math.saturate(get_moon_direction().y) * get_atm_moon_phases_mul()
 
-
 # **** Deep Space ****
 var deep_space_euler:= Vector3(-0.752, -2.56, 0.0) setget _set_deep_space_euler
 func _set_deep_space_euler(value: Vector3) -> void:
@@ -474,7 +472,6 @@ var stars_scintillation_speed: float = 0.01 setget _set_stars_scintillation_spee
 func _set_stars_scintillation_speed(value: float) -> void:
 	stars_scintillation_speed = value
 	_resources.sky_material.set_shader_param(TOD_Const.P_STARS_FIELD_SCONTILLATION_SPEED, value)
-
 
 # **** Environment ****
 var _enviro: Environment = null

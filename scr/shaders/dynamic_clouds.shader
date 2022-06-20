@@ -23,7 +23,7 @@ const int kCLOUDS_STEP = 10;
 uniform vec3 _PartialMiePhase;
 uniform float _MieIntensity;
 uniform vec4 _MieTint = vec4(1.0);
-uniform vec4 _MoonMieTint: hint_color = vec4(1.0);
+//uniform vec4 _MoonMieTint: hint_color = vec4(1.0);
 
 uniform float _HorizonLevel;
 
@@ -40,19 +40,19 @@ const float kTAU         = 6.2831853f;
 const float kINV_TAU     = 0.1591549f;
 const float kE           = 2.7182818f;
 
-float saturate(float value){
+float Saturate(float value){
 	return clamp(value, 0.0, 1.0);
 }
 
-vec3 saturateRGB(vec3 value){
+vec3 SaturateRGB(vec3 value){
 	return clamp(value.rgb, 0.0, 1.0);
 }
 
-float pow3(float real){
+float Pow3(float real){
 	return real * real * real;
 }
 
-float noiseClouds(vec3 p){
+float NoiseClouds(vec3 p){
 	vec3 pos = vec3(p * 0.01);
 	pos.z *= 256.0;
 	vec2 offset = vec2(0.317, 0.123);
@@ -64,37 +64,37 @@ float noiseClouds(vec3 p){
 	return mix(x1, x2, fract(pos.z));
 }
 
-float cloudsFBM(vec3 p, float l){
+float CloudsFBM(vec3 p, float l){
 	float ret;
-	ret = 0.51749673 * noiseClouds(p);  
+	ret = 0.51749673 * NoiseClouds(p);  
 	p *= l;
-	ret += 0.25584929 * noiseClouds(p); 
+	ret += 0.25584929 * NoiseClouds(p); 
 	p *= l; 
-	ret += 0.12527603 * noiseClouds(p); 
+	ret += 0.12527603 * NoiseClouds(p); 
 	p *= l;
-	ret += 0.06255931 * noiseClouds(p);
+	ret += 0.06255931 * NoiseClouds(p);
 	return ret;
 }
 
-float noiseCloudsFBM(vec3 p, float freq){
-	return cloudsFBM(p, freq);
+float NoiseCloudsFBM(vec3 p, float freq){
+	return CloudsFBM(p, freq);
 }
 
-float remap(float value, float fromMin, float fromMax, float toMin, float toMax){
+float Remap(float value, float fromMin, float fromMax, float toMin, float toMax){
 	return toMin + (value - fromMin) * (toMax - toMin) / (fromMax - fromMin);
 }
 
-float cloudsDensity(vec3 p, vec3 offset, float t){
+float CloudsDensity(vec3 p, vec3 offset, float t){
 	vec3 pos = p * 0.0212242 + offset;
-	float dens = noiseCloudsFBM(pos, _NoiseFreq);
+	float dens = NoiseCloudsFBM(pos, _NoiseFreq);
 	dens += dens;
 	
 	float cov = 1.0-_Coverage;
 	cov = smoothstep(0.00, (cov * 3.5) + t, dens);
 	dens *= cov;
-	dens = remap(dens, 1.0-cov, 1.0, 0.0, 1.0); 
+	dens = Remap(dens, 1.0-cov, 1.0, 0.0, 1.0); 
 	
-	return saturate(dens);
+	return Saturate(dens);
 }
 
 bool IntersectSphere(float r, vec3 origin, vec3 dir, out float t, out vec3 nrm)
@@ -122,11 +122,11 @@ bool IntersectSphere(float r, vec3 origin, vec3 dir, out float t, out vec3 nrm)
 	return true;
 }
 
-float miePhase(float mu, vec3 partial){
+float MiePhase(float mu, vec3 partial){
 	return kPI4 * (partial.x) * (pow(partial.y - partial.z * mu, -1.5));
 }
 
-vec4 renderClouds2(vec3 ro, vec3 rd, float tm, float am){
+vec4 RenderClouds(vec3 ro, vec3 rd, float tm, float am){
 	vec4 ret;
 	vec3 wind = _Offset * (tm * _OffsetSpeed);
     vec3 n; float tt; float a = 0.0;
@@ -137,18 +137,17 @@ vec4 renderClouds2(vec3 ro, vec3 rd, float tm, float am){
 		vec3 pos = n * _Size;
 		
 		vec2 mu = vec2(dot(_SunDirection, rd), dot(_MoonDirection, rd));
-		vec3 mph = ((miePhase(mu.x, _PartialMiePhase) * _MieTint.rgb) +
-		miePhase(mu.y, _PartialMiePhase) * am);
+		float mph = ((MiePhase(mu.x, _PartialMiePhase)) +
+		MiePhase(mu.y, _PartialMiePhase) * am);
 		
 		vec4 t = vec4(1.0);
-		t.rgb += (mph.rgb * _MieIntensity);
+		t.rgb += (mph * _MieIntensity);
 		
 		for(int i = 0; i < kCLOUDS_STEP; i++)
 		{
 			float h = float(i) * 0.1; // / float(kCLOUDS_STEP);
-			
-			float density = cloudsDensity(pos, wind, h);
-			float sh = saturate(exp(-_Absorption * density * marchStep));
+			float density = CloudsDensity(pos, wind, h);
+			float sh = Saturate(exp(-_Absorption * density * marchStep));
 			t *= sh;
 			ret += (t * (exp(h) * 0.571428571) * density * marchStep);
 			a += (1.0 - sh) * (1.0 - a);
@@ -173,23 +172,23 @@ void vertex(){
 	POSITION.z = POSITION.w;
 	
 	world_pos = (WORLD_MATRIX * vert);
-	angle_mult.x = saturate(1.0 - _SunDirection.y);
-	angle_mult.y = saturate(_SunDirection.y + 0.45);
-	angle_mult.z = saturate(-_SunDirection.y + 0.30);
-	angle_mult.w = saturate(-_SunDirection.y + 0.60);
+	angle_mult.x = Saturate(1.0 - _SunDirection.y);
+	angle_mult.y = Saturate(_SunDirection.y + 0.45);
+	angle_mult.z = Saturate(-_SunDirection.y + 0.30);
+	angle_mult.w = Saturate(-_SunDirection.y + 0.60);
 }
 
 void fragment(){
 	vec3 ray = normalize(world_pos).xyz;
-	float horizonBlend = saturate((ray.y+0.01) * 50.0);
+	float horizonBlend = Saturate((ray.y+0.01) * 50.0);
 	
-	vec4 clouds = renderClouds2(vec3(0.0, -_HorizonLevel, 0.0), ray, TIME, angle_mult.z);
-	clouds.a = saturate(clouds.a);
+	vec4 clouds = RenderClouds(vec3(0.0, -_HorizonLevel, 0.0), ray, TIME, angle_mult.z);
+	clouds.a = Saturate(clouds.a);
 	clouds.rgb *= mix(mix(_DayColor.rgb, _HorizonColor.rgb, angle_mult.x), 
 		_NightColor.rgb, angle_mult.w);
 	clouds.a = mix(0.0, clouds.a, horizonBlend);
 	
 	ALBEDO = clouds.rgb;
-	ALPHA = pow3(clouds.a);
+	ALPHA = Pow3(clouds.a);
 	DEPTH = 1.0;
 }
