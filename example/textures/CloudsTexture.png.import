@@ -2,8 +2,8 @@
 
 importer="texture"
 type="StreamTexture"
-path.s3tc="res://.import/CloudsTexture.png-6882ee772b7ce18bce9eb85002ce5802.s3tc.stex"
-path.etc2="res://.import/CloudsTexture.png-6882ee772b7ce18bce9eb85002ce5802.etc2.stex"
+path.s3tc="res://.import/CloudsTexture.png-376c52595c4cd66455761f75f898feb2.s3tc.stex"
+path.etc2="res://.import/CloudsTexture.png-376c52595c4cd66455761f75f898feb2.etc2.stex"
 metadata={
 "imported_formats": [ "s3tc", "etc2" ],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://addons/jc.godot3.time-of-day/content/graphics/clouds_panorama/CloudsTexture.png"
-dest_files=[ "res://.import/CloudsTexture.png-6882ee772b7ce18bce9eb85002ce5802.s3tc.stex", "res://.import/CloudsTexture.png-6882ee772b7ce18bce9eb85002ce5802.etc2.stex" ]
+source_file="res://addons/jc.godot3.time-of-day/example/textures/CloudsTexture.png"
+dest_files=[ "res://.import/CloudsTexture.png-376c52595c4cd66455761f75f898feb2.s3tc.stex", "res://.import/CloudsTexture.png-376c52595c4cd66455761f75f898feb2.etc2.stex" ]
 
 [params]
 

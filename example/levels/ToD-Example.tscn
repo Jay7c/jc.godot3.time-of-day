@@ -1,0 +1,222 @@
+[gd_scene load_steps=16 format=2]
+
+[ext_resource path="res://addons/jc.godot3.time-of-day/scr/skydome/tod_skydome.gd" type="Script" id=1]
+[ext_resource path="res://addons/jc.godot3.time-of-day/scr/skydome/tod_clouds_panorama.gd" type="Script" id=2]
+[ext_resource path="res://addons/jc.godot3.time-of-day/scr/time-of-day/tod_manager.gd" type="Script" id=3]
+[ext_resource path="res://addons/jc.godot3.time-of-day/scr/skydome/tod_dynamic_clouds.gd" type="Script" id=4]
+[ext_resource path="res://addons/jc.godot3.time-of-day/content/graphics/noiseClouds.png" type="Texture" id=5]
+[ext_resource path="res://addons/jc.godot3.time-of-day/example/textures/CloudsTexture.png" type="Texture" id=6]
+
+[sub_resource type="Environment" id=1]
+background_mode = 1
+ambient_light_color = Color( 0.378489, 0.431013, 0.438468, 1 )
+tonemap_mode = 4
+tonemap_white = 6.0
+glow_enabled = true
+glow_levels/1 = true
+glow_levels/2 = true
+glow_levels/4 = true
+glow_intensity = 0.24
+glow_strength = 0.95
+glow_blend_mode = 1
+glow_bicubic_upscale = true
+
+[sub_resource type="SpatialMaterial" id=2]
+albedo_color = Color( 0.239216, 0.239216, 0.239216, 1 )
+
+[sub_resource type="CubeMesh" id=3]
+
+[sub_resource type="SpatialMaterial" id=4]
+metallic = 0.55
+roughness = 0.03
+
+[sub_resource type="SphereMesh" id=5]
+
+[sub_resource type="SpatialMaterial" id=6]
+metallic = 0.55
+roughness = 0.02
+
+[sub_resource type="SpatialMaterial" id=7]
+flags_transparent = true
+albedo_color = Color( 0.294118, 0.294118, 0.294118, 0.266667 )
+metallic = 0.55
+roughness = 0.02
+
+[sub_resource type="Curve" id=8]
+max_value = 2.0
+_data = [ Vector2( 0, 2 ), 0.0, 0.0, 0, 0, Vector2( 0.754098, 2 ), 0.0, 0.0, 0, 0, Vector2( 0.896175, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Gradient" id=9]
+offsets = PoolRealArray( 0, 0.393586, 0.489796, 0.574344, 0.714286 )
+colors = PoolColorArray( 0.368627, 0.427451, 0.447059, 1, 0.445123, 0.455078, 0.380417, 1, 0.427734, 0.343409, 0.269005, 1, 0.29417, 0.310547, 0.234123, 1, 0.175476, 0.269604, 0.390625, 1 )
+
+[node name="Spatial" type="Spatial"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 1 )
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+transform = Transform( 500, 0, 0, 0, 1, 0, 0, 0, 500, 0, 0, 0 )
+material_override = SubResource( 2 )
+mesh = SubResource( 3 )
+
+[node name="MeshInstance2" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.98148, 0 )
+material_override = SubResource( 4 )
+mesh = SubResource( 5 )
+
+[node name="MeshInstance3" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.01708, 1.98148, 0 )
+material_override = SubResource( 6 )
+mesh = SubResource( 5 )
+
+[node name="MeshInstance4" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.98292, 1.98148, 0 )
+material_override = SubResource( 7 )
+mesh = SubResource( 5 )
+
+[node name="TOD_Manager" type="Node" parent="."]
+script = ExtResource( 3 )
+dome_path = NodePath("../TOD_Skydome")
+system_sync = false
+total_cycle_in_minutes = 15.0
+total_hours = 5.1117
+day = 12
+month = 2
+year = 2021
+celestials_calculations = 0
+compute_moon_coords = false
+compute_deep_space_coords = false
+latitude = 0.0
+longitude = 0.0
+utc = 0.0
+celestials_update_time = 0.0
+
+[node name="TOD_Skydome" type="Spatial" parent="."]
+script = ExtResource( 1 )
+sky_visible = true
+tonemap = 0.0
+exposure = 1.3
+horizon_level = 0.0
+ground_color = Color( 0.329412, 0.329412, 0.329412, 1 )
+near_space_layers = 8
+sky_layers = 4
+sky_render_priority = -128
+sun_altitude = 26.0356
+sun_azimuth = 0.0
+sun_disk_color = Color( 0.996078, 0.380392, 0.141176, 1 )
+sun_disk_intensity = 10.0
+sun_disk_size = 0.02
+sun_light_color = Color( 0.984314, 0.843137, 0.788235, 1 )
+sun_horizon_light_color = Color( 1, 0.717647, 0.647059, 1 )
+sun_light_energy = 2.0
+sun_light_energy_curve = SubResource( 8 )
+sun_light_path = NodePath("../SunLight")
+moon_altitude = -35.5
+moon_azimuth = -35.5
+moon_color = Color( 1, 1, 1, 1 )
+moon_size = 0.08
+enable_set_moon_texture = false
+moon_resolution = 1
+moon_light_path = NodePath("../MoonLight")
+moon_light_color = Color( 0.788235, 0.870588, 0.984314, 1 )
+moon_light_energy = 0.2
+atm_quality = 0
+atm_wavelenghts = Vector3( 680, 550, 440 )
+atm_darkness = 0.7
+atm_sun_intensity = 30.0
+atm_day_tint = Color( 0.705882, 0.803922, 0.984314, 1 )
+atm_horizon_light_tint = Color( 1, 0.839216, 0.517647, 1 )
+atm_enable_moon_scatter_mode = false
+atm_night_tint = Color( 0.254902, 0.337255, 0.447059, 1 )
+atm_level_params = Vector3( 1, 0, 0 )
+atm_thickness = 0.7
+atm_mie = 0.07
+atm_turbidity = 0.001
+atm_sun_mie_tint = Color( 1, 0.858824, 0.717647, 1 )
+atm_sun_mie_intensity = 1.0
+atm_sun_mie_anisotropy = 0.8
+atm_moon_mie_tint = Color( 0.12549, 0.168627, 0.27451, 1 )
+atm_moon_mie_intensity = 0.7
+atm_moon_mie_anisotropy = 0.8
+fog_visible = true
+fog_atm_level_params_offset = Vector3( 1, 0, -1 )
+fog_density = 0.026228
+fog_rayleigh_depth = 0.058
+fog_mie_depth = 0.0001
+fog_falloff = 3.0
+fog_start = 0.0
+fog_end = 267.015
+fog_layers = 524288
+fog_render_priority = 127
+deep_space_euler = Vector3( -0.752, -2.56, 0 )
+background_color = Color( 0.341176, 0.341176, 0.341176, 0.768627 )
+set_background_texture = false
+stars_field_color = Color( 1, 1, 1, 1 )
+set_stars_field_texture = false
+stars_scintillation = 0.75
+stars_scintillation_speed = 0.01
+enviro_container = NodePath("../WorldEnvironment")
+ambient_gradient = SubResource( 9 )
+
+[node name="TOD_DynamicClouds" type="Spatial" parent="."]
+script = ExtResource( 4 )
+layers = 4
+render_priority = -125
+sky_path = NodePath("../TOD_Skydome")
+day_color = Color( 0.807843, 0.909804, 1, 1 )
+horizon_color = Color( 1, 0.772549, 0.415686, 1 )
+night_color = Color( 0.082353, 0.164706, 0.32549, 1 )
+intensity = 1.5
+horizon_level = 0.0
+noise = ExtResource( 5 )
+noise_freq = 2.7
+size = 0.5
+offset = Vector3( 0.64, 0.522, 0.128 )
+offset_speed = 0.0172
+thickness = 0.0243
+coverage = 0.5192
+absorption = 6.0
+mie_intensity = 1.0
+mie_anisotropy = 0.2
+
+[node name="TOD_CloudsPanorama" type="Spatial" parent="."]
+visible = false
+script = ExtResource( 2 )
+layers = 4
+render_priority = -124
+sky_path = NodePath("../TOD_Skydome")
+day_color = Color( 0.807843, 0.909804, 1, 1 )
+horizon_color = Color( 1, 0.772549, 0.415686, 1 )
+night_color = Color( 0.082353, 0.164706, 0.32549, 1 )
+intensity = 1.5
+horizon_level = -0.1775
+rotation_speed = 0.002
+rotation_process = 0
+density_channel = 0
+alpha_channel = 2
+panorama = ExtResource( 6 )
+horizon_fade_offset = 0.2
+horizon_fade = 5.0
+
+[node name="SunLight" type="DirectionalLight" parent="."]
+transform = Transform( 0, -1, -1e-07, 0.43893, -8.98522e-08, 0.898522, -0.898522, -4.3893e-08, 0.43893, 0, 0.898521, 0.43893 )
+light_color = Color( 0.985906, 0.830402, 0.773909, 1 )
+light_energy = 2.0
+
+[node name="MoonLight" type="DirectionalLight" parent="."]
+transform = Transform( 0, -0.941427, 0.337216, -0.502173, 0.291613, 0.814115, -0.864767, -0.169341, -0.472759, 0.337216, 0.814116, -0.472759 )
+visible = false
+light_color = Color( 0.788235, 0.870588, 0.984314, 1 )
+light_energy = 0.0
+
+[node name="SkyProbeStatic" type="ReflectionProbe" parent="."]
+visible = false
+extents = Vector3( 1000, 1000, 1000 )
+cull_mask = 4
+
+[node name="SkyProbeDynamic" type="ReflectionProbe" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.966006, 0 )
+update_mode = 1
+extents = Vector3( 1000, 1000, 1000 )
+cull_mask = 4
