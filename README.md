@@ -10,7 +10,7 @@ Dynamic skydome and ToD plugin for godot engine.
 ![Screenshot](https://raw.githubusercontent.com/7leodev/UniversalSky/main/Screenshots/Screenshot0.jpg)
 
 ## Status:
-> 1.1.x dev
+> 1.1.x
 ------------------------------------
 
 ## Mono version?
