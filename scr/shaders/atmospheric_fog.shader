@@ -4,7 +4,7 @@
 // - J. Cuéllar 2022 MIT License
 // - See: LICENSE File.
 shader_type spatial;
-render_mode blend_mix, depth_draw_never, cull_disabled, unshaded, async_visible;
+render_mode blend_mix, depth_draw_never, depth_draw_alpha_prepass, cull_disabled, unshaded, async_visible;
 
 // Params.
 //------------------------------------------------------------------------------
@@ -181,6 +181,7 @@ varying vec4 v_angle_mult;
 
 void vertex(){
 	POSITION = vec4(VERTEX.xy, -1.0, 1.0);
+	//POSITION = PROJECTION_MATRIX * MODELVIEW_MATRIX * vec4(VERTEX, 1.0);
 	v_angle_mult.x = Saturate(1.0 - _SunDirection.y);
 	v_angle_mult.y = Saturate(_SunDirection.y + 0.45);
 	v_angle_mult.z = Saturate(-_SunDirection.y + 0.30);

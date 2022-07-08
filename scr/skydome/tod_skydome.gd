@@ -398,7 +398,7 @@ func _set_fog_layers(value: int) -> void:
 	fog_layers = value
 	_fog_instance.set_layers(value)
 
-var fog_render_priority: int = 127 setget _set_fog_render_priority
+var fog_render_priority: int = -100 setget _set_fog_render_priority
 func _set_fog_render_priority(value: int) -> void:
 	fog_render_priority = value
 	_resources.setup_fog_render_priority(value)
@@ -486,6 +486,17 @@ func _set_enviro_container(value: NodePath) -> void:
 var ambient_gradient: Gradient = null setget _set_ambient_gradient
 func _set_ambient_gradient(value: Gradient) -> void:
 	ambient_gradient = value
+	_update_enviro()
+
+var enable_enviro_fog: bool = false setget _set_enable_enviro_fog
+func _set_enable_enviro_fog(value: bool) -> void:
+	enable_enviro_fog = value
+	_update_enviro()
+	property_list_changed_notify()
+
+var enviro_fog_gradient: Gradient = null setget _set_enviro_fog_gradient
+func _set_enviro_fog_gradient(value: Gradient) -> void:
+	enviro_fog_gradient = value
 	_update_enviro()
 
 func _init() -> void:
@@ -616,6 +627,9 @@ func _init_properties() -> void:
 	# Enviro.
 	_set_enviro_container(enviro_container)
 	_set_ambient_gradient(ambient_gradient)
+	
+	_set_enable_enviro_fog(enable_enviro_fog)
+	_set_enviro_fog_gradient(enviro_fog_gradient)
 
 func _set_color_correction_params() -> void:
 	var param: Vector2
@@ -772,7 +786,7 @@ func _update_enviro() -> void:
 		if ambient_gradient != null:
 			var intensity: float = TOD_Math.lerp_p(1.0, get_atm_night_intensity(), TOD_Math.saturate(-sAlt + 0.60))
 			_enviro.ambient_light_color = ambient_gradient.interpolate(
-				TOD_Util.interpolate_full(get_sun_direction().y)) * intensity
+				TOD_Util.interpolate_full(sAlt)) * intensity
 		else:
 			var a = TOD_Math.saturate(1.0 - sAlt)
 			var b = TOD_Math.saturate(-sAlt + 0.60)
@@ -781,6 +795,16 @@ func _update_enviro() -> void:
 			var colB:= TOD_Math.lerp_p_color(colA, atm_night_tint * get_atm_night_intensity(), b)
 			
 			_enviro.ambient_light_color = colB
+		
+		# Fog.
+		if enviro_fog_gradient != null:
+			var intensity: float = TOD_Math.lerp_p(1.0, get_atm_night_intensity(), TOD_Math.saturate(-sAlt + 0.60))
+			
+			_enviro.fog_color = enviro_fog_gradient.interpolate(
+				TOD_Util.interpolate_full(sAlt))
+			_enviro.fog_color.r *= intensity
+			_enviro.fog_color.g *= intensity
+			_enviro.fog_color.b *= intensity
 
 # **** Editor Properties ****
 func _get_property_list() -> Array:
@@ -887,5 +911,11 @@ func _get_property_list() -> Array:
 	ret.push_back({name = "Environment", type=TYPE_NIL, usage=PROPERTY_USAGE_GROUP})
 	ret.push_back({name = "enviro_container", type=TYPE_NODE_PATH})
 	ret.push_back({name = "ambient_gradient", type=TYPE_OBJECT, hint=PROPERTY_HINT_RESOURCE_TYPE, hint_string="Gradient"})
+	
+	ret.push_back({name = "enable_enviro_fog", type=TYPE_BOOL})
+	
+	if enable_enviro_fog:
+		ret.push_back({name = "enviro_fog_gradient", type=TYPE_OBJECT, hint=PROPERTY_HINT_RESOURCE_TYPE, hint_string="Gradient"})
+	
 	
 	return ret

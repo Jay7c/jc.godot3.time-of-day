@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://addons/jc.godot3.time-of-day/scr/skydome/tod_skydome.gd" type="Script" id=1]
 [ext_resource path="res://addons/jc.godot3.time-of-day/scr/skydome/tod_clouds_panorama.gd" type="Script" id=2]
@@ -9,7 +9,11 @@
 
 [sub_resource type="Environment" id=1]
 background_mode = 1
-ambient_light_color = Color( 0.378489, 0.431013, 0.438468, 1 )
+ambient_light_color = Color( 0.403832, 0.440166, 0.416389, 1 )
+fog_enabled = true
+fog_color = Color( 0.53125, 0.824219, 1, 1 )
+fog_depth_begin = 0.0
+fog_depth_curve = 0.435275
 tonemap_mode = 4
 tonemap_white = 6.0
 glow_enabled = true
@@ -50,6 +54,10 @@ _data = [ Vector2( 0, 2 ), 0.0, 0.0, 0, 0, Vector2( 0.754098, 2 ), 0.0, 0.0, 0, 
 offsets = PoolRealArray( 0, 0.393586, 0.489796, 0.574344, 0.714286 )
 colors = PoolColorArray( 0.368627, 0.427451, 0.447059, 1, 0.445123, 0.455078, 0.380417, 1, 0.427734, 0.343409, 0.269005, 1, 0.29417, 0.310547, 0.234123, 1, 0.175476, 0.269604, 0.390625, 1 )
 
+[sub_resource type="Gradient" id=10]
+offsets = PoolRealArray( 0.217742, 0.393586, 0.489796, 0.574344, 0.714286 )
+colors = PoolColorArray( 0.53125, 0.824219, 1, 1, 0.76832, 0.784668, 0.662064, 1, 0.819824, 0.61737, 0.438734, 1, 0.515689, 0.54248, 0.417456, 1, 0.175476, 0.269604, 0.390625, 1 )
+
 [node name="Spatial" type="Spatial"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -80,7 +88,7 @@ script = ExtResource( 3 )
 dome_path = NodePath("../TOD_Skydome")
 system_sync = false
 total_cycle_in_minutes = 15.0
-total_hours = 5.1117
+total_hours = 8.6415
 day = 12
 month = 2
 year = 2021
@@ -102,7 +110,7 @@ ground_color = Color( 0.329412, 0.329412, 0.329412, 1 )
 near_space_layers = 8
 sky_layers = 4
 sky_render_priority = -128
-sun_altitude = 26.0356
+sun_altitude = 50.3775
 sun_azimuth = 0.0
 sun_disk_color = Color( 0.996078, 0.380392, 0.141176, 1 )
 sun_disk_intensity = 10.0
@@ -148,7 +156,7 @@ fog_falloff = 3.0
 fog_start = 0.0
 fog_end = 267.015
 fog_layers = 524288
-fog_render_priority = 127
+fog_render_priority = -100
 deep_space_euler = Vector3( -0.752, -2.56, 0 )
 background_color = Color( 0.341176, 0.341176, 0.341176, 0.768627 )
 set_background_texture = false
@@ -158,6 +166,8 @@ stars_scintillation = 0.75
 stars_scintillation_speed = 0.01
 enviro_container = NodePath("../WorldEnvironment")
 ambient_gradient = SubResource( 9 )
+enable_enviro_fog = true
+enviro_fog_gradient = SubResource( 10 )
 
 [node name="TOD_DynamicClouds" type="Spatial" parent="."]
 script = ExtResource( 4 )
@@ -200,8 +210,8 @@ horizon_fade_offset = 0.2
 horizon_fade = 5.0
 
 [node name="SunLight" type="DirectionalLight" parent="."]
-transform = Transform( 0, -1, -1e-07, 0.43893, -8.98522e-08, 0.898522, -0.898522, -4.3893e-08, 0.43893, 0, 0.898521, 0.43893 )
-light_color = Color( 0.985906, 0.830402, 0.773909, 1 )
+transform = Transform( 0, -1, -1e-07, 0.770263, -6.37727e-08, 0.637727, -0.637727, -7.70263e-08, 0.770263, 0, 0.637727, 0.770263 )
+light_color = Color( 0.989997, 0.797675, 0.737091, 1 )
 light_energy = 2.0
 
 [node name="MoonLight" type="DirectionalLight" parent="."]
