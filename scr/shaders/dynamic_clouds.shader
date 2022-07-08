@@ -1,5 +1,12 @@
 shader_type spatial;
 render_mode unshaded, blend_mix, depth_draw_never, cull_front, skip_vertex_transform;
+// Description:
+// - Dynamic clouds.
+// Licenses:
+// - J. Cuéllar 2022 MIT License
+// - See: LICENSE File.
+// This shader is based on DanilS clouds shader with MIT License
+// See: https://github.com/danilw/godot-utils-and-other/tree/master/Dynamic%20sky%20and%20reflection.
 
 uniform vec3 _SunDirection;
 uniform vec3 _MoonDirection;
