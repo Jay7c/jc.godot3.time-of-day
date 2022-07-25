@@ -213,6 +213,6 @@ void fragment(){
 	fogColor.rgb = TonemapPhoto(fogColor.rgb, _ColorCorrection.y, _ColorCorrection.x);
 	
 	ALBEDO = fogColor.rgb;
-	ALPHA = fogColor.a;
-	//ALPHA = (depthRaw) < 0.999999999999 ? fogColor.a: 0.0; // Exclude sky.
+	//ALPHA = fogColor.a;
+	ALPHA = (depthRaw) < 0.999999999999 ? fogColor.a: 0.0; // Exclude sky.
 }

@@ -797,7 +797,7 @@ func _update_enviro() -> void:
 			_enviro.ambient_light_color = colB
 		
 		# Fog.
-		if enviro_fog_gradient != null:
+		if enable_enviro_fog && enviro_fog_gradient != null:
 			var intensity: float = TOD_Math.lerp_p(1.0, get_atm_night_intensity(), TOD_Math.saturate(-sAlt + 0.60))
 			
 			_enviro.fog_color = enviro_fog_gradient.interpolate(
@@ -886,8 +886,8 @@ func _get_property_list() -> Array:
 	ret.push_back({name = "fog_rayleigh_depth", type=TYPE_REAL, hint=PROPERTY_HINT_EXP_EASING, hint_string="0.0, 1.0"})
 	ret.push_back({name = "fog_mie_depth", type= TYPE_REAL, hint=PROPERTY_HINT_EXP_EASING, hint_string="0.0, 1.0"})
 	ret.push_back({name = "fog_falloff", type=TYPE_REAL, hint=PROPERTY_HINT_RANGE, hint_string="0.0, 10.0"})
-	ret.push_back({name = "fog_start", type=TYPE_REAL, hint=PROPERTY_HINT_RANGE, hint_string="0.0, 5000.0"})
-	ret.push_back({name = "fog_end", type=TYPE_REAL, hint=PROPERTY_HINT_RANGE, hint_string="0.0, 5000.0"})
+	ret.push_back({name = "fog_start", type=TYPE_REAL, hint=PROPERTY_HINT_RANGE, hint_string="0.0, 8500.0"})
+	ret.push_back({name = "fog_end", type=TYPE_REAL, hint=PROPERTY_HINT_RANGE, hint_string="0.0, 8500.0"})
 	ret.push_back({name = "fog_layers", type=TYPE_INT, hint=PROPERTY_HINT_LAYERS_3D_RENDER})
 	ret.push_back({name = "fog_render_priority", type=TYPE_INT})
 	

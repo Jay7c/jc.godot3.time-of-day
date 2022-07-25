@@ -9,7 +9,7 @@
 
 [sub_resource type="Environment" id=1]
 background_mode = 1
-ambient_light_color = Color( 0.403832, 0.440166, 0.416389, 1 )
+ambient_light_color = Color( 0.407179, 0.441374, 0.413473, 1 )
 fog_enabled = true
 fog_color = Color( 0.53125, 0.824219, 1, 1 )
 fog_depth_begin = 0.0
@@ -88,7 +88,7 @@ script = ExtResource( 3 )
 dome_path = NodePath("../TOD_Skydome")
 system_sync = false
 total_cycle_in_minutes = 15.0
-total_hours = 8.6415
+total_hours = 8.4737
 day = 12
 month = 2
 year = 2021
@@ -110,7 +110,7 @@ ground_color = Color( 0.329412, 0.329412, 0.329412, 1 )
 near_space_layers = 8
 sky_layers = 4
 sky_render_priority = -128
-sun_altitude = 50.3775
+sun_altitude = 52.8945
 sun_azimuth = 0.0
 sun_disk_color = Color( 0.996078, 0.380392, 0.141176, 1 )
 sun_disk_intensity = 10.0
@@ -149,12 +149,12 @@ atm_moon_mie_intensity = 0.7
 atm_moon_mie_anisotropy = 0.8
 fog_visible = true
 fog_atm_level_params_offset = Vector3( 1, 0, -1 )
-fog_density = 0.026228
+fog_density = 0.570525
 fog_rayleigh_depth = 0.058
 fog_mie_depth = 0.0001
 fog_falloff = 3.0
 fog_start = 0.0
-fog_end = 267.015
+fog_end = 162.079
 fog_layers = 524288
 fog_render_priority = -100
 deep_space_euler = Vector3( -0.752, -2.56, 0 )
@@ -210,8 +210,8 @@ horizon_fade_offset = 0.2
 horizon_fade = 5.0
 
 [node name="SunLight" type="DirectionalLight" parent="."]
-transform = Transform( 0, -1, -1e-07, 0.770263, -6.37727e-08, 0.637727, -0.637727, -7.70263e-08, 0.770263, 0, 0.637727, 0.770263 )
-light_color = Color( 0.989997, 0.797675, 0.737091, 1 )
+transform = Transform( 0, -1, -1e-07, 0.797526, -6.03285e-08, 0.603285, -0.603285, -7.97526e-08, 0.797526, 0, 0.603285, 0.797526 )
+light_color = Color( 0.990537, 0.793353, 0.732228, 1 )
 light_energy = 2.0
 
 [node name="MoonLight" type="DirectionalLight" parent="."]
